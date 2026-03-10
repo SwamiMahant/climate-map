@@ -1,1 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Climate Map</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<style>
+  body {
+    font-family: Arial;
+    margin: 0;
+  }
+  #map {
+    height: 700px;
+    background: #bcdcff; /* ocean color */
+  }
+  .legend {
+    background: white;
+    padding: 10px;
+    line-height: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  }
+  .legend span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
 
+#map{
+height:650px;
+background:#aad3df; /* ocean color */
+}
+</style>
+</head>
+<body>
+
+<h1 style="text-align:center">Climate Map by:Jiyan</h2>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+
+
+var map = L.map('map', {
+    center: [20, 0],
+    zoom: 2,
+    zoomSnap: 0,
+    zoomDelta: 0.25,
+    wheelPxPerZoomLevel: 60
+});
+
+L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+	
+        attribution: '© OpenStreetMap',
+        noWrap: true
+    }
+).addTo(map);
+
+
+var climates = [
+    // Tropical Rainforest (Af)
+    {name: " Tropical Rainforest", color:"#007f3f", lat:[-10,10]},
+    // Tropical Monsoon (Am)
+    {name: " Tropical Monsoon", color:"#00b377", lat:[10,20]},
+    // Tropical Savanna (Aw)
+    {name: " Tropical Savanna", color:"#7ec850", lat:[-20,-10]},
+    {name: " Tropical Savanna", color:"#7ec850", lat:[10,20]},
+    // Hot Desert (BWh)
+    {name: " Hot Desert", color:"#f4a261", lat:[20,30]},
+    {name: " Hot Desert", color:"#f4a261", lat:[30,40]},
+    {name: " Hot Desert", color:"#f4a261", lat:[-30,-20]},
+    // Cold Desert (BWk)
+    {name: " Cold Desert", color:"#d99058", lat:[40,50]},
+    {name: " Cold Desert", color:"#d99058", lat:[-40,-30]},
+    // Mediterranean (Csa)
+    {name: " Mediterranean", color:"#ffd166", lat:[30,45]},
+    {name: " Mediterranean", color:"#ffd166", lat:[-35,-30]},
+    // Oceanic (Cfb)
+    {name: " Oceanic", color:"#2a9d8f", lat:[45,55]},
+    {name: " Oceanic", color:"#2a9d8f", lat:[-45,-35]},
+    // Humid Continental (Dfa)
+    {name: " Humid Continental", color:"#8ecae6", lat:[40,55]},
+    {name: " Humid Continental", color:"#8ecae6", lat:[-40,-30]},
+    // Subarctic (Dfc)
+    {name: " Subarctic", color:"#5dade2", lat:[55,65]},
+    {name: " Subarctic", color:"#5dade2", lat:[-55,-45]},
+    // Tundra (ET)
+    {name: " Tundra", color:"#90e0ef", lat:[65,70]},
+    {name: " Tundra", color:"#90e0ef", lat:[-65,-60]},
+    // Ice Cap (EF)
+    {name: " Ice Cap", color:"#e0fbfc", lat:[70,90]},
+    {name: " Ice Cap", color:"#e0fbfc", lat:[-90,-70]}
+];
+
+climates.forEach(function(c){
+    L.rectangle([
+        [c.lat[0], -180],
+        [c.lat[1], 180]
+    ], {
+        color: c.color,
+        weight: 0,
+        fillOpacity: 0.2
+    }).addTo(map)
+      .bindPopup("<b>"+c.name+"</b>");
+});
+
+var bounds = L.latLngBounds(
+    [-90, -180],
+    [90, 180]
+);
+map.setMaxBounds(bounds);
+map.fitWorld();
+
+
+var legend = L.control({position:'bottomright'});
+
+legend.onAdd = function(map){
+    var div = L.DomUtil.create('div','legend');
+    climates.forEach(function(c,i){
+        // only add unique climates
+        if(i==0 || climates[i].name !== climates[i-1].name){
+            div.innerHTML += "<span style='background:"+c.color+"'></span> "+c.name+"<br>";
+        }
+    });
+    return div;
+};
+legend.addTo(map);
+
+
+L.marker([27.9881, 86.9250])
+  .addTo(map)
+  .bindPopup("Mount Everest")
+  
+L.marker([39.0402581, -107.9497893])
+  .addTo(map)
+  .bindPopup("Grand Mesa")
+
+L.marker([ 21.3156,  -157.8580])
+  .addTo(map)
+  .bindPopup("Grand Mesa")
+
+
+var bounds = [[27.9, 86.8], [28.1, 87.0]];
+
+L.imageOverlay('hurricane.jpg', bounds).addTo(map);
+
+
+  
+
+
+</script>
+
+</body>
+<style>
+
+ body {
+            background-color: #aad3df; /* HEX color */
+        }
+
+h3 {
+text-align: center; /* Mountains */
+background-color: #f0f0f0;
+padding: 10px;
+}
+
+ p {
+text-align: center; /* Mountains */
+background-color: #ff7f50;
+padding: 10px;
+}
+
+
+
+</style>
+
+<h3> Mountains </h3>
+
+<p style="font-family: 'Arial'; font-size: 16px; color: black;">
+
+Mountains are formed when the tectonic plates collide and the tectonic plate moves up. Mountains are usually in highland climates, where temperatures are cooler and the weather can change quickly because of the high elevation.
+This is the Canadian Rocky Mountains located in the west sides of British Colombia and Alberta.
+The mountains experience the 4 seasons and are made off igneous rock. Humans affect the Rocky Mountains in several ways,
+including mining, logging, urban development, tourism, and overgrazing, which damages landscapes, 
+disturbs wildlife habitats, and pollutes air, soil, and water. Mountains can be affected by avalanches, landslides, earthquakes, and volcanic eruptions in some regions. </p> 
+
+
+
+<h3> Mesas </h3>
+ 
+<p style="font-family: 'Arial'; font-size: 16px; color: black;">
+
+Mesas are formed with the uplift of tectonic plates and erosion. The erosion makes a flat-top layer called caprock usually made with sandstone, limestone, and volcanic rock. Mesas are often found in dry or desert climates, especially in places with little rainfall and lots of erosion, like parts of the southwestern United States. The world’s biggest mesa is located in Colorado, USA named the Grand Mesa. Humans have affected this one of a kind landform by the introduction of invasive species and the degradation of natural habitats and the loss of most forests and wetlands. Mesas   can experience erosion, landslides, and flash floods during heavy rain.</p> 
+
+
+
+<h3> Islands </h3>
+
+<p style="font-family: 'Arial'; font-size: 16px; color: black;">
+
+Islands are formed in several ways, most commonly through volcanic activity or the movement of tectonic plates. When magma rises from beneath the Earth's crust, it can build up over time and eventually form land above the ocean surface. Some islands also form from coral reefs or from pieces of land that separate from continents. Islands are commonly in tropical or marine climates, where the surrounding ocean keeps temperatures mild and can bring a lot of rain and storms. An example is the islands of Hawaii, which were formed by underwater volcanoes. Islands often experience unique climates and ecosystems because they are surrounded by water. Humans affect islands through tourism, construction, pollution, and overfishing, which can damage coral reefs, harm wildlife habitats, and disturb the natural balance of the environment. Islands are surrounded by water, so they are often at risk of hurricanes, tsunamis, and flooding from strong ocean storms.</p> 
+
+
+
+</html>
